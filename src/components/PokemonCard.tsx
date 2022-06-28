@@ -1,6 +1,7 @@
-import { Box, Heading, Image, Stack } from '@chakra-ui/react';
+import { Box, Center, Heading, Stack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { Pokemon } from '../models/Pokemon';
+import { PokemonImage } from './PokemonImage';
 import { Types } from './Types';
 
 interface Props {
@@ -14,7 +15,7 @@ export const PokemonCard = ({ pokemon }: Props) => {
   const navigate = useNavigate();
   return (
     <Box
-      as='a'
+      as='button'
       onClick={() => navigate(`/pokemon/${id}`)}
       bg='white'
       textColor='black'
@@ -23,12 +24,13 @@ export const PokemonCard = ({ pokemon }: Props) => {
       borderRadius='xl'
       transition='0.5s'
       _hover={{ transform: 'scale(1.15)' }}
+      maxW='500'
     >
       <Stack>
         <Heading>{name}</Heading>
-        <Box>
-          <Image src={`https://projectpokemon.org/images/sprites-models/pgo-sprites/pm${id}.icon.png`}></Image>
-        </Box>
+        <Center>
+          <PokemonImage id={id}></PokemonImage>
+        </Center>
         <Types types={types}></Types>
       </Stack>
     </Box>

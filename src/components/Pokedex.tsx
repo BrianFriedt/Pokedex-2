@@ -1,5 +1,6 @@
 import { SimpleGrid } from '@chakra-ui/react';
 import { Pokemon } from '../models/Pokemon';
+import { Loading } from './Loading';
 import { PokemonCard } from './PokemonCard';
 
 interface Props {
@@ -9,7 +10,7 @@ interface Props {
 
 export const Pokedex = ({ pokemonList, isLoading }: Props) => {
   if (isLoading) {
-    return <>Loading!</>;
+    return <Loading />;
   } else {
     return (
       <SimpleGrid minChildWidth='300px' spacing='10' p='10'>

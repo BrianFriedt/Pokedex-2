@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useOutletContext, useSearchParams } from 'react-router-dom';
 import { Meta } from '../models/Meta';
 import { Pokemon } from '../models/Pokemon';
 import { Header } from './Header';
@@ -13,6 +13,7 @@ export const Home = () => {
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [meta, setMeta] = useState<Meta>();
+  const { returnPage, setReturnPage } = useOutletContext<{ returnPage: string; setReturnPage: (newPage: string) => void }>();
 
   useEffect(() => {
     setIsLoading(true);
@@ -26,7 +27,7 @@ export const Home = () => {
   }, [name, page]);
   return (
     <Box bg='#FDF4FF'>
-      <Header meta={meta} isLoading={isLoading}></Header>
+      <Header meta={meta} isLoading={isLoading} returnPage={returnPage} setReturnPage={setReturnPage}></Header>
       <Pokedex pokemonList={pokemonList} isLoading={isLoading}></Pokedex>
     </Box>
   );

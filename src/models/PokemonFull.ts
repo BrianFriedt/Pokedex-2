@@ -1,11 +1,12 @@
 import { Pokemon } from './Pokemon';
+import { Stats } from './Stats';
 
 export class PokemonFull extends Pokemon {
   height: number;
   weight: number;
   abilities: string[];
   egg_groups: string[];
-  stats: [];
+  stats: Stats;
   genus: string;
   description: string;
 
@@ -18,7 +19,7 @@ export class PokemonFull extends Pokemon {
     weight: number,
     abilities: string[],
     egg_groups: string[],
-    stats: [],
+    stats: Stats,
     genus: string,
     description: string
   ) {
