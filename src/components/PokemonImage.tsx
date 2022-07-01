@@ -1,12 +1,11 @@
-import {} from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Props {
   id: number;
 }
 
 export const PokemonImage = ({ id }: Props) => {
-  const [imageLink, setImageLink] = useState(`https://projectpokemon.org/images/sprites-models/pgo-sprites/pm${id}.icon.png`);
+  let [imageLink, setImageLink] = useState(`https://projectpokemon.org/images/sprites-models/pgo-sprites/pm${id}.icon.png`);
 
   const checkIfImageExists = (url: string, callback: (exists: boolean) => void) => {
     const img = new Image();
@@ -22,12 +21,13 @@ export const PokemonImage = ({ id }: Props) => {
       };
     }
   };
-
-  checkIfImageExists(imageLink, (exists) => {
-    if (!exists) {
-      console.log('switching the link');
-      setImageLink(`https://projectpokemon.org/images/sprites-models/pgo-sprites/pokemon_icon_${id}_11.png`);
-    }
+  useEffect(() => {
+    checkIfImageExists(imageLink, (exists) => {
+      if (!exists) {
+        console.log(`GET ${imageLink} caused an error. Switching the link to an accesible image now.`);
+        setImageLink(`https://projectpokemon.org/images/sprites-models/pgo-sprites/pokemon_icon_${id}_11.png`);
+      }
+    });
   });
 
   return <img src={imageLink} alt='pokemon' />;

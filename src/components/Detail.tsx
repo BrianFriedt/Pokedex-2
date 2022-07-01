@@ -1,28 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Flex, Heading, VStack, Text, Spacer, Image, SimpleGrid, Center } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text, Spacer, Image, SimpleGrid, Center, Button } from '@chakra-ui/react';
 import { PokemonFull } from '../models/PokemonFull';
 import { Types } from './Types';
 import { Loading } from './Loading';
 import { StatsTable } from './StatsTable';
-import { FastAverageColor } from 'fast-average-color';
 import { getColorByType } from '../helpers/getColorByType';
 import { ProfileStat } from './ProfileStat';
 
 export const Detail = () => {
   const [pokemonInfo, setPokemonInfo] = useState<PokemonFull>();
-  const [isLoading, setIsLoading] = useState(true);
   let { page_id } = useParams();
   let navigate = useNavigate();
-
-  async function getColor() {
-    var image;
-    const fac = new FastAverageColor();
-    const pokemonImage = document!.querySelector('.detail-page')!.querySelector('img');
-    pokemonImage!.crossOrigin = 'A';
-    const color = fac.getColor(pokemonImage);
-    console.log(color.hex);
-  }
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch(`https://intern-pokedex.myriadapps.com/api/v1/pokemon/${page_id}`)
@@ -39,27 +29,53 @@ export const Detail = () => {
     return (
       <>
         <Box className='detail-page' bg={getColorByType(types[0])} textColor='black' h='100vh'>
-          <VStack>
-            <Heading>{name}</Heading>
-            <Box w='50%' bg='white' p='10' borderRadius='2xl' boxShadow='lg'>
-              <Flex alignItems='center' flexWrap='wrap'>
-                <Heading>{name}&nbsp;</Heading>
-                <Text>#{id}</Text>
+          <Flex w={'100%'} pt={'5'} px={['3', '5']}>
+            <Button
+              as='a'
+              onClick={() => {
+                navigate(-1);
+              }}
+              bg='rgb(255, 255, 255, 0.35)'
+              size={['md', 'lg']}
+              minW='max-content'
+            >
+              <Text fontSize={['sm', 'lg']} transform={'scale(-1,1)'}>
+                &nbsp;&#10132;
+              </Text>
+              Back
+            </Button>
+            <Spacer />
+            <Text pr={'5%'} fontSize={['3xl', '4xl', '5xl']} color={'rgb(255, 255, 255, 0.5)'} flexShrink='initial'>
+              {name}
+            </Text>
+            <Spacer />
+          </Flex>
+          <Center bg={getColorByType(types[0])} pb='5'>
+            <Box w='5xl' bg='white' p={['5', '5', '8']} m={['3', '5', '10']} borderRadius='2xl' boxShadow='lg'>
+              <Flex alignItems='baseline' flexWrap='wrap'>
+                <Heading>{name}</Heading>
+                <Text fontSize={'2xl'} color='gray' px='2'>
+                  #{id}
+                </Text>
                 <Spacer />
                 <Types types={types} />
               </Flex>
 
-              <SimpleGrid minChildWidth='250px'>
+              <SimpleGrid minChildWidth={['210px', '300px', '300px']}>
                 <Center>
-                  <Image src={`https://assets.pokemon.com/assets/cms2/img/pokedex/full/${id.toString().padStart(3, '000')}.png`}></Image>
+                  <Image maxH='350px' src={`https://assets.pokemon.com/assets/cms2/img/pokedex/full/${id.toString().padStart(3, '000')}.png`}></Image>
                 </Center>
-
-                <StatsTable stats={stats} color={getColorByType(types[1] ?? types[0])} />
+                <Center>
+                  <StatsTable stats={stats} color={getColorByType(types[1] ?? types[0])} />
+                </Center>
               </SimpleGrid>
-              <Text fontWeight='bold' fontSize='lg'>
-                {genus}
-              </Text>
-              <Text>{description}</Text>
+              <Box px={'2'}>
+                <Text fontWeight='bold' fontSize='lg' pt='3'>
+                  {genus}
+                </Text>
+                <Text>{description}</Text>
+              </Box>
+
               <Text backgroundColor={getColorByType(types[1] ?? types[0])} textColor='white' fontWeight='bold' fontSize='lg' px='3' py='1' my='3'>
                 Profile:
               </Text>
@@ -74,7 +90,7 @@ export const Detail = () => {
                 </Box>
               </Flex>
             </Box>
-          </VStack>
+          </Center>
         </Box>
       </>
     );

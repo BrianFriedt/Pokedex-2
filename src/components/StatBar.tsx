@@ -21,19 +21,21 @@ export const StatBar = ({ stat, value, color }: Props) => {
       case 'special-defense':
         return 230;
       default:
-        return 1000;
+        return 0;
     }
   };
 
   return (
     <Box>
       <Flex alignItems='center'>
-        <Text textTransform='capitalize' w='100px' p='3' flexShrink='unset'>
+        <Text textTransform='capitalize' w='100px' pr='3' flexShrink='unset'>
           {stat.replaceAll('-', ' ')}
         </Text>
-        <Flex h='max-content' w='100%' bg='gray.300' my='4'>
-          <Box bg={color} w={`${(value / getMaxStat(stat)) * 100}%`}>
-            <Text textColor='white'>&nbsp;{value}</Text>
+        <Flex position='static' h='23px' w='100%' bg='gray.300' my='4'>
+          <Box position='relative' bg={color} h='23px' w={`${(value / getMaxStat(stat)) * 100}%`}>
+            <Text position='absolute' textColor='white'>
+              &nbsp;{value}
+            </Text>
           </Box>
         </Flex>
       </Flex>

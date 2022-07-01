@@ -1,6 +1,5 @@
-import { Button } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { getColorByType } from '../helpers/getColorByType';
-import { fadeOut } from '../helpers/fadeOut';
 
 interface Props {
   type: string;
@@ -9,14 +8,18 @@ interface Props {
 
 export const Type = ({ type }: Props) => {
   return (
-    <Button
+    <Box
       as='div'
       textColor='white'
       bg={`${getColorByType(type)}`}
-      _hover={type === 'ghost' ? { backgroundColor: 'white' } : {}}
+      _hover={{ backgroundColor: type === 'ghost' ? 'white' : {} }}
       transitionDuration='0.5s'
+      px='4'
+      py='2'
+      borderRadius='lg'
+      textTransform='capitalize'
     >
       {type}
-    </Button>
+    </Box>
   );
 };

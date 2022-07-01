@@ -1,24 +1,22 @@
-import React, { createRef, RefObject, FormEvent, useState, useContext } from 'react';
-import { Flex, Button, ButtonGroup, Heading, Input, Circle } from '@chakra-ui/react';
+import { createRef, RefObject, FormEvent } from 'react';
+import { Flex, Button, ButtonGroup, Heading, Input, Circle, Stack, Spacer, Center } from '@chakra-ui/react';
 import { useSearchParams } from 'react-router-dom';
-import { Meta } from '../models/Meta';
-import PageContextt from '../PageContext';
-import { ContextModel } from '../models/ContextModel';
+import { useReturnPage } from '../context/PageContext';
+import { Displaying } from './Displaying';
+import { useIsLoading } from '../context/IsLoadingContext';
+import { useMeta } from '../context/MetaContext';
 
-interface Props {
-  meta?: Meta;
-  isLoading: boolean;
-  returnPage: string;
-  setReturnPage: (newPage: string) => void;
-}
-
-export const Header = ({ meta, isLoading, returnPage, setReturnPage }: Props) => {
+export const Header = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   let name: string = searchParams.get('name') ?? '';
   let page: string = searchParams.get('page') ?? '1';
   const searchBar: RefObject<HTMLInputElement> = createRef();
+  const { returnPage, setReturnPage } = useReturnPage();
+  const { isLoading } = useIsLoading();
+  const { meta } = useMeta();
 
-  const handleClick = (buttonName: string) => {
+  const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, buttonName: string) => {
+    event.preventDefault();
     if (!isLoading) {
       switch (buttonName) {
         case 'start':
@@ -58,64 +56,110 @@ export const Header = ({ meta, isLoading, returnPage, setReturnPage }: Props) =>
       timeoutId = setTimeout(() => fn.apply(this, args), ms);
     };
   };
+
   const searchByName: Function = (event: FormEvent<HTMLInputElement>) => {
     setSearchParams({ name: event.currentTarget.value, page: event.currentTarget.value === '' ? returnPage : '1' });
   };
+
   const clearSearch = () => {
     searchBar.current!.value = '';
     setSearchParams({ name: '', page: returnPage });
   };
 
   return (
-    <Flex bg='#F5EBFF' px='7' py='10' justifyContent='space-evenly'>
-      <ButtonGroup>
-        <Circle onClick={() => handleClick('start')} as='a' href='' size='16' bg='#574F62' fontSize='5xl' pb='1'>
+    <Flex bg='#F5EBFF' px={['3', '5', '7']} pt={['4', '6', '10']} justifyContent='space-evenly' alignItems={'center'} flexWrap={['wrap']}>
+      <ButtonGroup order={[1]} mb={['0', '3', '0']}>
+        <Circle
+          onClick={(event) => handleClick(event, 'start')}
+          as='a'
+          href=''
+          size={['12', '14', '14', '16']}
+          bg='#574F62'
+          fontSize={['3xl', '4xl', '4xl', '5xl']}
+          pb='1'
+        >
           &#8647;
         </Circle>
-        <Circle onClick={() => handleClick('back')} as='a' href='' size='16' bg='#574F62' fontSize='3xl' transform='scale(-1,1)'>
+        <Circle
+          onClick={(event) => handleClick(event, 'back')}
+          as='a'
+          href=''
+          size={['12', '14', '14', '16']}
+          bg='#574F62'
+          fontSize={['xl', '2xl', '2xl', '3xl']}
+          transform='scale(-1,1)'
+        >
           &#10132;
         </Circle>
       </ButtonGroup>
 
-      <Heading textColor='black' fontSize='5xl' px='5'>
-        Pokédex {returnPage}
-      </Heading>
-      <Input
-        onChange={(event) => {
-          debounce(searchByName(event), 5000);
-        }}
-        ref={searchBar}
-        textColor='black'
-        defaultValue={name}
-        placeholder='Search'
-        bg='white'
-        fontSize='5xl'
-        p='8'
-        h='8'
-        w='100%'
-        border=' 3px solid black'
-        //background='url(`https://intern-pokedex.myriadapps.com/images/pokemon/326.png`) no-repeat left'
-      ></Input>
-      <Button
-        onClick={() => {
-          clearSearch();
-        }}
-        fontSize='5xl'
-        border=' 3px solid black'
-        bg='grey'
-        p='8'
-      >
-        Clear
-      </Button>
+      <Spacer order={[2, 5, 4]} />
 
-      <ButtonGroup pl='7'>
-        <Circle onClick={() => handleClick('next')} as='a' href='' size='16' bg='#574F62' fontSize='3xl'>
+      <Center order={[4, 2, 2]} w={['100%', 'max-content']} flexGrow='1'>
+        <Heading textColor='black' fontSize={['4xl', '4xl', '4xl', '5xl']} px={['2', '3', '4']}>
+          Pokédex
+        </Heading>
+      </Center>
+
+      <Stack order={[4, 4, 3]} flexGrow={['10']} w={['100%', '100%', '40%']} direction={'row'} alignItems='center' spacing='0'>
+        <Input
+          onChange={(event) => {
+            debounce(searchByName(event), 5000);
+          }}
+          ref={searchBar}
+          textColor='black'
+          defaultValue={name}
+          placeholder='Search'
+          _placeholder={{ color: 'gray.200' }}
+          fontSize={['3xl', '5xl', '5xl']}
+          paddingLeft='55'
+          py={['2', '6', '6']}
+          pb={['3', '7', '7']}
+          w='100%'
+          background={`url('https://www.seekpng.com/png/full/71-712261_lens-clipart-magnifier-search-icon-png-grey.png') no-repeat left white`}
+          backgroundSize={'40px'}
+          backgroundPosition={'10px'}
+        ></Input>
+        <Button
+          onClick={() => {
+            clearSearch();
+          }}
+          fontSize={['2xl', '4xl', '4xl']}
+          border=' 2px solid black'
+          bg='grey'
+          py={['3', '6', '6']}
+          minW='max-content'
+        >
+          Clear
+        </Button>
+      </Stack>
+
+      <ButtonGroup order={[3, 3, 5]} mb={['0', '3', '0']}>
+        <Circle
+          onClick={(event) => handleClick(event, 'next')}
+          as='a'
+          href=''
+          size={['12', '14', '14', '16']}
+          bg='#574F62'
+          fontSize={['xl', '2xl', '2xl', '3xl']}
+        >
           &#10132;
         </Circle>
-        <Circle onClick={() => handleClick('end')} as='a' href='' size='16' bg='#574F62' fontSize='5xl' pb='1'>
+        <Circle
+          onClick={(event) => handleClick(event, 'end')}
+          as='a'
+          href=''
+          size={['12', '14', '14', '16']}
+          bg='#574F62'
+          fontSize={['3xl', '4xl', '4xl', '5xl']}
+          pb='1'
+        >
           &#8649;
         </Circle>
       </ButtonGroup>
+      <Center w='100%' order={6} py={['4']}>
+        <Displaying />
+      </Center>
     </Flex>
   );
 };

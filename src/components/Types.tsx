@@ -8,7 +8,7 @@ interface Props {
 export const Types = ({ types }: Props) => {
   return (
     <Flex>
-      <Spacer></Spacer>
+      <Spacer />
       <ButtonGroup>
         {types.map((type) => (
           <Type type={type} key={type}></Type>

@@ -1,4 +1,4 @@
-import { Box, Center, Heading, Stack } from '@chakra-ui/react';
+import { Center, Stack, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { Pokemon } from '../models/Pokemon';
 import { PokemonImage } from './PokemonImage';
@@ -14,7 +14,7 @@ export const PokemonCard = ({ pokemon }: Props) => {
 
   const navigate = useNavigate();
   return (
-    <Box
+    <Center
       as='button'
       onClick={() => navigate(`/pokemon/${id}`)}
       bg='white'
@@ -23,16 +23,17 @@ export const PokemonCard = ({ pokemon }: Props) => {
       boxShadow='lg'
       borderRadius='xl'
       transition='0.5s'
-      _hover={{ transform: 'scale(1.15)' }}
-      maxW='500'
+      _hover={{ transform: 'scale(1.10)', border: `` }}
     >
-      <Stack>
-        <Heading>{name}</Heading>
+      <Stack w='100%'>
+        <Text fontSize={['3xl']} fontWeight='bold'>
+          {name}
+        </Text>
         <Center>
           <PokemonImage id={id}></PokemonImage>
         </Center>
         <Types types={types}></Types>
       </Stack>
-    </Box>
+    </Center>
   );
 };
