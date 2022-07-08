@@ -7,8 +7,8 @@ export const Displaying = () => {
   let displayText = meta ? `Displaying ${rangeText} ${meta?.total} Pokémon` : '';
 
   return (
-    <Text color='gray.400' fontSize={['md', '2xl']}>
-      {displayText}&nbsp;
+    <Text textAlign='center' color='gray.400' fontSize={['md', 'lg', 'xl', '2xl']} py={['2', '3']}>
+      {displayText}
     </Text>
   );
 };

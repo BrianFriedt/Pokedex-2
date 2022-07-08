@@ -1,5 +1,5 @@
-import { ButtonGroup, Flex, Spacer } from '@chakra-ui/react';
-import { Type } from './Type';
+import { Box, ButtonGroup, Flex, Spacer } from '@chakra-ui/react';
+import { getColorByType } from '../helpers/getColorByType';
 
 interface Props {
   types: string[];
@@ -11,7 +11,20 @@ export const Types = ({ types }: Props) => {
       <Spacer />
       <ButtonGroup>
         {types.map((type) => (
-          <Type type={type} key={type}></Type>
+          <Box
+            as='div'
+            textColor='white'
+            bg={`${getColorByType(type)}`}
+            _hover={{ backgroundColor: type === 'ghost' ? 'white' : '' }}
+            transitionDuration='0.5s'
+            px='4'
+            py='2'
+            borderRadius='lg'
+            textTransform='capitalize'
+            key={type}
+          >
+            {type}
+          </Box>
         ))}
       </ButtonGroup>
     </Flex>

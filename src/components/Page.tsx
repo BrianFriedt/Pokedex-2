@@ -1,19 +1,22 @@
 import { Box } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
-import { PageProvider } from '../context/PageContext';
+import { ReturnPageProvider } from '../context/ReturnPageContext';
 import { PokemonListProvider } from '../context/PokemonListContex';
 import { MetaProvider } from '../context/MetaContext';
+import { DetailIdProvider } from '../context/DetailIdContext';
 
 export const Page = () => {
   return (
-    <Box bg='#FDF4FF' minH={'100vh'}>
-      <PageProvider>
+    <Box bg='#FDF4FF' minH='100vh'>
+      <ReturnPageProvider>
         <PokemonListProvider>
           <MetaProvider>
-            <Outlet />
+            <DetailIdProvider>
+              <Outlet />
+            </DetailIdProvider>
           </MetaProvider>
         </PokemonListProvider>
-      </PageProvider>
+      </ReturnPageProvider>
     </Box>
   );
 };

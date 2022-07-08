@@ -1,4 +1,5 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
+import { expandToWidth } from '../helpers/expandToWidth';
 
 interface Props {
   stat: string;
@@ -6,7 +7,7 @@ interface Props {
   color: string;
 }
 export const StatBar = ({ stat, value, color }: Props) => {
-  const getMaxStat = (typeOfStat: string) => {
+  const getMaxValue = (typeOfStat: string) => {
     switch (typeOfStat) {
       case 'hp':
         return 255;
@@ -26,19 +27,24 @@ export const StatBar = ({ stat, value, color }: Props) => {
   };
 
   return (
-    <Box>
-      <Flex alignItems='center'>
-        <Text textTransform='capitalize' w='100px' pr='3' flexShrink='unset'>
-          {stat.replaceAll('-', ' ')}
-        </Text>
-        <Flex position='static' h='23px' w='100%' bg='gray.300' my='4'>
-          <Box position='relative' bg={color} h='23px' w={`${(value / getMaxStat(stat)) * 100}%`}>
-            <Text position='absolute' textColor='white'>
-              &nbsp;{value}
-            </Text>
-          </Box>
-        </Flex>
-      </Flex>
-    </Box>
+    <Flex alignItems='center' flexWrap={['wrap', 'nowrap']}>
+      <Text textTransform='capitalize' w={['100%', '100px']} pr='3' fontSize={['sm', 'md']} textAlign={['left', 'right']}>
+        {stat.replaceAll('-', ' ')}
+      </Text>
+      <Box position='static' h={['5', '6']} w='100%' bg='gray.300' mb={['3', '4']} mt={['0', '3']} borderRadius='full'>
+        <Box
+          position='relative'
+          bg={color}
+          animation={expandToWidth(`${(value / getMaxValue(stat)) * 100}%`)}
+          h='inherit'
+          w={`${(value / getMaxValue(stat)) * 100}%`}
+          borderRadius='full'
+        >
+          <Text position='absolute' h='inherit' pl='2' textColor='white' fontSize={['sm', 'md']}>
+            {value}
+          </Text>
+        </Box>
+      </Box>
+    </Flex>
   );
 };

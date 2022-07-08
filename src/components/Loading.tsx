@@ -3,9 +3,9 @@ import { fadeInDelay } from '../helpers/fadeInDelay';
 
 export const Loading = () => {
   return (
-    <Center w='100%' bg='#FDF4FF' pt={'100'}>
+    <Center w='100%'>
       <VStack>
-        <Box animation={fadeInDelay(2)}>
+        <Box animation={fadeInDelay(1)}>
           <Image src='https://thumbs.gfycat.com/DampSpanishCleanerwrasse-max-1mb.gif'></Image>
           <Center>
             <Text textColor='black' fontSize='3xl'>

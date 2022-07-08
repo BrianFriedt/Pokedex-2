@@ -16,36 +16,40 @@ export const Pokedex = () => {
   const { setMeta } = useMeta();
 
   useEffect(() => {
+    const abortController = new AbortController();
     setIsLoading(true);
-    fetch(`https://intern-pokedex.myriadapps.com/api/v1/pokemon?${new URLSearchParams({ name, page })}`)
+    fetch(`https://intern-pokedex.myriadapps.com/api/v1/pokemon?${new URLSearchParams({ name, page })}`, { signal: abortController.signal })
       .then((res) => res.json())
       .then(({ data, meta }) => {
         setMeta(meta);
         setPokemonList(data);
         setIsLoading(false);
       });
-  }, [name, page]);
+    return function cancel() {
+      abortController.abort();
+    };
+  }, [name, page, setIsLoading, setMeta, setPokemonList]);
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <Center w='100%' minH='100vh'>
+        <Loading />
+      </Center>
+    );
   } else if (pokemonList.length === 0) {
     return (
       <SimpleGrid columns={[1, 2, 2, 3, 4, 5]} spacing={['4', '4', '7']} p={['5', '5', '8']}>
-        <Center bg='white' textColor='black' p='4' boxShadow='lg' borderRadius='xl' transition='0.5s' opacity={'50%'}>
-          <VStack w='100%'>
-            <Text fontSize={['2xl']} fontWeight='bold'>
-              No Pokémon found
-            </Text>
-            <Center>
-              <Image src='https://www.pngitem.com/pimgs/m/485-4858557_sad-mirror-ash-ash-from-pokemon-sad-hd.png'></Image>
-            </Center>
-          </VStack>
-        </Center>
+        <VStack bg='white' textColor='black' p='4' boxShadow='lg' borderRadius='xl' transition='0.5s' opacity='50%' w='100%'>
+          <Text fontSize='2xl' fontWeight='bold'>
+            No Pokémon found
+          </Text>
+          <Image w='100%' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPy5QQucspA0nyTIRnWhqdpvyS30CN6Zfh7Q&usqp=CAU'></Image>
+        </VStack>
       </SimpleGrid>
     );
   } else {
     return (
-      <SimpleGrid columns={[1, 2, 2, 3, 4, 5]} spacing={['4', '4', '7']} p={['5', '5', '8']}>
+      <SimpleGrid columns={[1, 2, 3, 3, 4, 5, 6]} spacing={['4', '4', '7']} p={['5', '5', '8']}>
         {pokemonList.map((pokemon) => {
           return <PokemonCard key={pokemon.id} pokemon={pokemon}></PokemonCard>;
         })}
