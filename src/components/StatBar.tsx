@@ -31,7 +31,7 @@ export const StatBar = ({ stat, value, color }: Props) => {
       <Text textTransform='capitalize' w={['100%', '100px']} pr='3' fontSize={['sm', 'md']} textAlign={['left', 'right']}>
         {stat.replaceAll('-', ' ')}
       </Text>
-      <Box position='static' h={['5', '6']} w='100%' bg='gray.300' mb={['3', '4']} mt={['0', '3']} borderRadius='full'>
+      <Box position='static' h={['5', '6']} w='100%' bg='gray.200' mb={['3', '4']} mt={['0', '3']} borderRadius='full'>
         <Box
           position='relative'
           bg={color}

@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { fadeInDelay } from '../helpers/fadeInDelay';
-import loadingSpinner from '../images/257.gif';
+import loadingSpinner from '../images/loadingSpinner.gif';
 
 interface Props {
   id: number;
@@ -14,7 +14,6 @@ const PokemonCardImage = ({ id }: Props) => {
   const checkIfImageExists = (url: string, callback: (exists: boolean) => void) => {
     const img = new Image();
     img.src = url;
-
     if (img.complete) {
       callback(true);
     } else {
@@ -38,7 +37,7 @@ const PokemonCardImage = ({ id }: Props) => {
   if (isLoading) {
     return (
       <Box animation={fadeInDelay(0.5)}>
-        <img src={loadingSpinner} alt='loading...'></img>
+        <img src={loadingSpinner} alt='loading...' />
       </Box>
     );
   }

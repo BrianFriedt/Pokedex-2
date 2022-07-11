@@ -42,7 +42,7 @@ export const Search = () => {
         backgroundPosition={['6px', '7px', '7px', '10px']}
         paddingLeft={['37', '45', '45', '55']}
         borderEndRadius='0'
-      ></Input>
+      />
       <Button
         onClick={() => {
           clearSearch();

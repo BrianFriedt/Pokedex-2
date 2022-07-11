@@ -1,13 +1,13 @@
 import { Center } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import loadingSpinner from '../images/257.gif';
+import loadingSpinner from '../images/loadingSpinner.gif';
 import { fadeInDelay } from '../helpers/fadeInDelay';
 
 interface Props {
   id: number;
 }
 
-const PokemonDetailImage = ({ id }: Props) => {
+export const PokemonDetailImage = ({ id }: Props) => {
   const url = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${id.toString().padStart(3, '000')}.png`;
   const [isLoading, setIsLoading] = useState(true);
 
@@ -44,5 +44,3 @@ const PokemonDetailImage = ({ id }: Props) => {
     return <img style={{ maxHeight: '350px' }} src={url} alt={`pokemon ${id}`} />;
   }
 };
-
-export default PokemonDetailImage;

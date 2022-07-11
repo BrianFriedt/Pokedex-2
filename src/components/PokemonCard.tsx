@@ -47,7 +47,7 @@ export const PokemonCard = ({ pokemon }: Props) => {
         </Center>
 
         <Box mt='-1'>
-          <Types types={types}></Types>
+          <Types types={types} />
         </Box>
       </Stack>
     </Center>

@@ -15,7 +15,7 @@ export const Types = ({ types }: Props) => {
             as='div'
             textColor='white'
             bg={`${getColorByType(type)}`}
-            _hover={{ backgroundColor: type === 'ghost' ? 'white' : '' }}
+            _hover={{ backgroundColor: type === 'ghost' ? 'inherit' : '' }}
             transitionDuration='0.5s'
             px='4'
             py='2'

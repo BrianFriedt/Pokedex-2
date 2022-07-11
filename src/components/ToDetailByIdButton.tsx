@@ -10,16 +10,20 @@ import {
   Tooltip,
   Center,
 } from '@chakra-ui/react';
-import { createRef, RefObject } from 'react';
+import { createRef, RefObject, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDetailId } from '../context/DetailIdContext';
+import { useTotalNumOfPokemon } from '../context/TotalNumberOfPokemonContext';
 import _ from 'lodash';
 
 export const ToDetailByIdButton = () => {
   const navigate = useNavigate();
   const { detatilId, setDetailId } = useDetailId();
   const inputNum: RefObject<HTMLInputElement> = createRef();
-
+  const { totalNumOfPokemon } = useTotalNumOfPokemon();
+  useEffect(() => {
+    console.log('detailIdButton is loading');
+  }, [totalNumOfPokemon]);
   return (
     <Stack
       fontWeight='normal'
@@ -45,7 +49,14 @@ export const ToDetailByIdButton = () => {
       </Center>
       <Box ml={['-2', '-3.5']}>
         <Tooltip hasArrow openDelay={250} label='type, scroll, or click to edit!'>
-          <NumberInput allowMouseWheel size={['sm', 'md', 'md', 'lg']} maxW={['70px', '85px']} min={1} max={553} defaultValue={detatilId}>
+          <NumberInput
+            allowMouseWheel
+            size={['sm', 'md', 'md', 'lg']}
+            maxW={['70px', '85px']}
+            min={1}
+            max={totalNumOfPokemon}
+            defaultValue={detatilId}
+          >
             <NumberInputField
               onChange={(event) => setDetailId(parseInt(event.target.value))}
               onWheel={_.debounce((event) => {
@@ -56,7 +67,6 @@ export const ToDetailByIdButton = () => {
               _focusVisible={{ border: 'none ' }}
               autoFocus={true}
             />
-
             <NumberInputStepper>
               <NumberIncrementStepper onClick={() => setDetailId(parseInt(inputNum.current!.value))} />
               <NumberDecrementStepper onClick={() => setDetailId(parseInt(inputNum.current!.value))} />

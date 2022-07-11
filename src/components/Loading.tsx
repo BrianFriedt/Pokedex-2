@@ -6,7 +6,7 @@ export const Loading = () => {
     <Center w='100%'>
       <VStack>
         <Box animation={fadeInDelay(1)}>
-          <Image src='https://thumbs.gfycat.com/DampSpanishCleanerwrasse-max-1mb.gif'></Image>
+          <Image src='https://thumbs.gfycat.com/DampSpanishCleanerwrasse-max-1mb.gif' />
           <Center>
             <Text textColor='black' fontSize='3xl'>
               Loading...

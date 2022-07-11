@@ -1,4 +1,3 @@
-import { Pokemon } from './Pokemon';
 import { Stats } from './Stats';
 
 export interface PokemonFull {
