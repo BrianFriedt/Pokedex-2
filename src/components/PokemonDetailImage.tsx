@@ -27,6 +27,7 @@ export const PokemonDetailImage = ({ id }: Props) => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     checkIfImageIsLoaded(url, (loaded) => {
       if (loaded) {
         setIsLoading(false);

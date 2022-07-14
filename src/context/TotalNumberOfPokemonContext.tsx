@@ -1,7 +1,7 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 
 const useValue = () => {
-  const [totalNumOfPokemon, setTotalNumOfPokemon] = useState(1);
+  const [totalNumOfPokemon, setTotalNumOfPokemon] = useState(553);
   return {
     totalNumOfPokemon,
     setTotalNumOfPokemon,

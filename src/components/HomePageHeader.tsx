@@ -4,15 +4,15 @@ import { ToDetailByIdButton } from './ToDetailByIdButton';
 import { Search } from './Search';
 import { PageSelect } from './PageSelect';
 
-export const Header = () => {
+export const HomePageHeader = () => {
   return (
-    <Box position='sticky' top='0' zIndex='999' bg='#F5EBFF' px={['3']} pt={['4']}>
-      <Flex justifyContent='space-evenly' alignItems={'center'} flexWrap={['wrap']}>
+    <Box position='sticky' top='0' zIndex='999' bg='#83d0c9' px='3' pt='4'>
+      <Flex justifyContent='space-evenly' alignItems='center' flexWrap='wrap'>
         <Center w='100%' pb='2'>
           <PageSelect />
         </Center>
 
-        <Flex w={['100%', '100%', 'unset']} flexWrap={'wrap'} justifyContent='space-around'>
+        <Flex w={['100%', '100%', 'unset']} flexWrap='wrap' justifyContent='space-around'>
           <Center>
             <Heading textColor='black' fontSize={['4xl', '4xl', '4xl', '5xl']} px={['1', '1', '3']}>
               Pokédex

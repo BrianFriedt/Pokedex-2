@@ -38,13 +38,24 @@ export const PageSlider = () => {
       <SliderMark value={1} mt='3'>
         1
       </SliderMark>
-      <SliderMark value={meta?.last_page ?? 1} mt='3' ml='-3'>
-        {meta?.last_page ?? 1}
-      </SliderMark>
-      <SliderTrack bg='#FDF4FF'>
-        <SliderFilledTrack bg='#574F62' />
+      <EndSliderMark />
+      <SliderTrack bg='#cdece9'>
+        <SliderFilledTrack bg='#009688' />
       </SliderTrack>
       <SliderThumb boxSize='6'>{sliderValue}</SliderThumb>
     </Slider>
   );
+};
+
+const EndSliderMark = () => {
+  const { meta } = useMeta();
+  if (meta && meta?.last_page !== 1) {
+    return (
+      <SliderMark value={meta?.last_page ?? 1} mt='3' ml='-3'>
+        {meta?.last_page ?? 1}
+      </SliderMark>
+    );
+  } else {
+    return <></>;
+  }
 };

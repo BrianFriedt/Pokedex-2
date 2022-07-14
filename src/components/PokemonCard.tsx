@@ -23,7 +23,7 @@ export const PokemonCard = ({ pokemon }: Props) => {
       }}
       bg='white'
       textColor='black'
-      p='4'
+      py='4'
       boxShadow='lg'
       borderRadius='xl'
       transition='0.5s'
@@ -33,7 +33,7 @@ export const PokemonCard = ({ pokemon }: Props) => {
       margin='auto'
     >
       <Stack w='100%' spacing='none'>
-        <Flex>
+        <Flex px='4'>
           <Text mb='-3' fontSize={['3xl']} fontWeight='bold'>
             {name}
           </Text>
@@ -42,11 +42,11 @@ export const PokemonCard = ({ pokemon }: Props) => {
             #{id}
           </Text>
         </Flex>
-        <Center minH='200'>
+        <Center minH='200' px='1'>
           <PokemonCardImage id={id} />
         </Center>
 
-        <Box mt='-1'>
+        <Box px='4' mt='-1'>
           <Types types={types} />
         </Box>
       </Stack>

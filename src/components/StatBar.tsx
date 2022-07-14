@@ -31,19 +31,18 @@ export const StatBar = ({ stat, value, color }: Props) => {
       <Text textTransform='capitalize' w={['100%', '100px']} pr='3' fontSize={['sm', 'md']} textAlign={['left', 'right']}>
         {stat.replaceAll('-', ' ')}
       </Text>
-      <Box position='static' h={['5', '6']} w='100%' bg='gray.200' mb={['3', '4']} mt={['0', '3']} borderRadius='full'>
+      <Box position='relative' h={['5', '6']} w='100%' bg='gray.200' mb={['3', '4']} mt={['0', '3']} borderRadius='full'>
         <Box
-          position='relative'
+          position='absolute'
           bg={color}
-          animation={expandToWidth(`${(value / getMaxValue(stat)) * 100}%`)}
+          animation={expandToWidth((value / getMaxValue(stat)) * 100)}
           h='inherit'
           w={`${(value / getMaxValue(stat)) * 100}%`}
           borderRadius='full'
-        >
-          <Text position='absolute' h='inherit' pl='2' textColor='white' fontSize={['sm', 'md']}>
-            {value}
-          </Text>
-        </Box>
+        ></Box>
+        <Text position='absolute' h='inherit' pl='2' textColor='white' fontSize={['sm', 'md']}>
+          {value}
+        </Text>
       </Box>
     </Flex>
   );

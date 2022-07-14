@@ -1,31 +1,34 @@
 import { Center, SimpleGrid, VStack, Text, Image } from '@chakra-ui/react';
 import { Loading } from './Loading';
 import { PokemonCard } from './PokemonCard';
-import { useIsLoading } from '../context/IsLoadingContext';
-import { useEffect, useState } from 'react';
+import { usePokemonListIsLoading } from '../context/PokemonListIsLoadingContext';
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useMeta } from '../context/MetaContext';
-import { Pokemon } from '../models/Pokemon';
 import { useTotalNumOfPokemon } from '../context/TotalNumberOfPokemonContext';
+import { usePokemonList } from '../context/PokemonListContex';
+import { useNameAndPage } from '../context/NameAndPageContext';
 
 export const Pokedex = () => {
   const [searchParams] = useSearchParams();
   let name: string = searchParams.get('name') ?? '';
   let page: string = searchParams.get('page') ?? '1';
-  const { isLoading, setIsLoading } = useIsLoading();
-  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
+  const { pokemonListIsLoading, setPokemonListIsLoading } = usePokemonListIsLoading();
+  const { pokemonList, setPokemonList } = usePokemonList();
   const { setMeta } = useMeta();
   const { setTotalNumOfPokemon } = useTotalNumOfPokemon();
+  const { setNameAndPage } = useNameAndPage();
 
   useEffect(() => {
     const abortController = new AbortController();
-    setIsLoading(true);
+    setPokemonListIsLoading(true);
+    setNameAndPage({ name: name, page: parseInt(page) });
     fetch(`https://intern-pokedex.myriadapps.com/api/v1/pokemon?${new URLSearchParams({ name, page })}`, { signal: abortController.signal })
       .then((res) => res.json())
       .then(({ data, meta }) => {
         setMeta(meta);
         setPokemonList(data);
-        setIsLoading(false);
+        setPokemonListIsLoading(false);
         if (name === '') {
           setTotalNumOfPokemon(meta.total);
         }
@@ -33,9 +36,9 @@ export const Pokedex = () => {
     return function cancel() {
       abortController.abort();
     };
-  }, [name, page, setIsLoading, setMeta, setPokemonList, setTotalNumOfPokemon]);
+  }, [name, page]);
 
-  if (isLoading) {
+  if (pokemonListIsLoading) {
     return (
       <Center w='100%' minH='100vh'>
         <Loading />
@@ -55,8 +58,8 @@ export const Pokedex = () => {
   } else {
     return (
       <SimpleGrid columns={[1, 2, 3, 3, 4, 5, 6]} spacing={['4', '4', '7']} p={['5', '5', '8']}>
-        {pokemonList.map((pokemon) => {
-          return <PokemonCard key={pokemon.id} pokemon={pokemon} />;
+        {pokemonList.map((pokemon, index) => {
+          return <PokemonCard key={index} pokemon={pokemon} />;
         })}
       </SimpleGrid>
     );

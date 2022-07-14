@@ -2,7 +2,7 @@ import { Button, Input, Stack } from '@chakra-ui/react';
 import { RefObject, createRef, ChangeEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useReturnPage } from '../context/ReturnPageContext';
-import { useIsLoading } from '../context/IsLoadingContext';
+import { usePokemonListIsLoading } from '../context/PokemonListIsLoadingContext';
 import _ from 'lodash';
 
 export const Search = () => {
@@ -10,7 +10,7 @@ export const Search = () => {
   let name: string = searchParams.get('name') ?? '';
   const searchBar: RefObject<HTMLInputElement> = createRef();
   const { returnPage } = useReturnPage();
-  const { setIsLoading } = useIsLoading();
+  const { setPokemonListIsLoading } = usePokemonListIsLoading();
 
   const searchByName = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchParams({ name: event.target.value.trim(), page: event.target.value.trim() === '' ? returnPage.toString() : '1' });
@@ -19,7 +19,7 @@ export const Search = () => {
   const clearSearch = () => {
     if (name !== '') {
       searchBar.current!.value = '';
-      setIsLoading(true);
+      setPokemonListIsLoading(true);
       setSearchParams({ name: '', page: returnPage.toString() });
     }
   };
@@ -37,7 +37,7 @@ export const Search = () => {
         py={['2', '4', '4', '6']}
         pb={['2', '4', '4', '7']}
         w='100%'
-        background={`url('https://www.seekpng.com/png/full/71-712261_lens-clipart-magnifier-search-icon-png-grey.png') no-repeat left white`}
+        background={`url('https://www.seekpng.com/png/full/71-712261_lens-clipart-magnifier-search-icon-png-grey.png') no-repeat left #f2faf9`}
         backgroundSize={['27px', '34px', '34px', '40px']}
         backgroundPosition={['6px', '7px', '7px', '10px']}
         paddingLeft={['37', '45', '45', '55']}
@@ -49,7 +49,7 @@ export const Search = () => {
         }}
         fontSize={['2xl', '3xl', '3xl', '4xl']}
         borderStartRadius='0'
-        bg='#574F62'
+        bg='#009688'
         px={['2', '3']}
         py={['3', '4', '4', '27px']}
         minW='max-content'

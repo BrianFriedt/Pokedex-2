@@ -10,7 +10,7 @@ import {
   Tooltip,
   Center,
 } from '@chakra-ui/react';
-import { createRef, RefObject, useEffect } from 'react';
+import { createRef, RefObject } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDetailId } from '../context/DetailIdContext';
 import { useTotalNumOfPokemon } from '../context/TotalNumberOfPokemonContext';
@@ -21,14 +21,12 @@ export const ToDetailByIdButton = () => {
   const { detatilId, setDetailId } = useDetailId();
   const inputNum: RefObject<HTMLInputElement> = createRef();
   const { totalNumOfPokemon } = useTotalNumOfPokemon();
-  useEffect(() => {
-    console.log('detailIdButton is loading');
-  }, [totalNumOfPokemon]);
+
   return (
     <Stack
       fontWeight='normal'
       direction='row'
-      bg='#574F62'
+      bg='#009688'
       borderRadius='lg'
       spacing='none'
       fontSize={['sm', 'md', 'md', 'lg']}
