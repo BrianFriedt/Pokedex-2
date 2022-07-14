@@ -46,7 +46,7 @@ export const ToDetailByIdButton = () => {
         <Text>Go to pokemon #</Text>
       </Center>
       <Box ml={['-2', '-3.5']}>
-        <Tooltip hasArrow openDelay={250} label='type, scroll, or click to edit!'>
+        <Tooltip hasArrow openDelay={250} label='type, scroll, or click to edit!' bg='#d9f0ee'>
           <NumberInput
             allowMouseWheel
             size={['sm', 'md', 'md', 'lg']}
