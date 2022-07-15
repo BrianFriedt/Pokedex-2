@@ -1,12 +1,9 @@
 import {Center, SimpleGrid, VStack, Text, Image} from '@chakra-ui/react';
 import {Loading} from './Loading';
 import {PokemonCard} from './PokemonCard';
-import {usePokemonListIsLoading} from '../context/PokemonListIsLoadingContext';
 import {useEffect} from 'react';
 import {useSearchParams} from 'react-router-dom';
-import {useMeta} from '../context/MetaContext';
-import {useTotalNumOfPokemon} from '../context/TotalNumberOfPokemonContext';
-import {usePokemonList} from '../context/PokemonListContex';
+import {usePokedex} from '../context/PokedexContex';
 import {useNameAndPage} from '../context/NameAndPageContext';
 
 export const Pokedex = () => {
@@ -14,25 +11,24 @@ export const Pokedex = () => {
   const {
     nameAndPage: {name, page}
   } = useNameAndPage();
-  const {pokemonListIsLoading, setPokemonListIsLoading} = usePokemonListIsLoading();
-  const {pokemonList, setPokemonList} = usePokemonList();
-  const {setMeta} = useMeta();
-  const {setTotalNumOfPokemon} = useTotalNumOfPokemon();
+  const {
+    pokedex: {list, meta, isLoading, size},
+    setPokedex
+  } = usePokedex();
 
   useEffect(() => {
     const abortController = new AbortController();
     setSearchParams({name: name, page: page.toString()});
-    setPokemonListIsLoading(true);
+    setPokedex({list: list, isLoading: true, meta: meta, size: size});
     fetch(`https://intern-pokedex.myriadapps.com/api/v1/pokemon?${new URLSearchParams({name: name, page: page.toString()})}`, {
       signal: abortController.signal
     })
       .then((res) => res.json())
       .then(({data, meta}) => {
-        setMeta(meta);
-        setPokemonList(data);
-        setPokemonListIsLoading(false);
         if (name === '') {
-          setTotalNumOfPokemon(meta.total);
+          setPokedex({list: data, isLoading: false, meta: meta, size: meta.total});
+        } else {
+          setPokedex({list: data, isLoading: false, meta: meta, size: size});
         }
       });
     return function cancel() {
@@ -40,13 +36,13 @@ export const Pokedex = () => {
     };
   }, [name, page]);
 
-  if (pokemonListIsLoading) {
+  if (isLoading) {
     return (
       <Center w='100%' minH='100vh'>
         <Loading />
       </Center>
     );
-  } else if (pokemonList.length === 0) {
+  } else if (list.length === 0) {
     return (
       <SimpleGrid columns={[1, 2, 2, 3, 4, 5]} spacing={['4', '4', '7']} p={['5', '5', '8']}>
         <VStack bg='white' textColor='black' p='4' boxShadow='lg' borderRadius='xl' transition='0.5s' opacity='50%' w='100%'>
@@ -60,7 +56,7 @@ export const Pokedex = () => {
   } else {
     return (
       <SimpleGrid columns={[1, 2, 3, 3, 4, 5, 6]} spacing={['4', '4', '7']} p={['5', '5', '8']}>
-        {pokemonList.map((pokemon, index) => {
+        {list.map((pokemon, index) => {
           return <PokemonCard key={index} pokemon={pokemon} />;
         })}
       </SimpleGrid>

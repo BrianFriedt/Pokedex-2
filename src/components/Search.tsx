@@ -1,7 +1,6 @@
 import {Button, Input, Stack} from '@chakra-ui/react';
 import {RefObject, createRef, ChangeEvent} from 'react';
 import {useReturnPage} from '../context/ReturnPageContext';
-import {usePokemonListIsLoading} from '../context/PokemonListIsLoadingContext';
 import _ from 'lodash';
 import {useNameAndPage} from '../context/NameAndPageContext';
 
@@ -12,7 +11,6 @@ export const Search = () => {
   } = useNameAndPage();
   const searchBar: RefObject<HTMLInputElement> = createRef();
   const {returnPage} = useReturnPage();
-  const {setPokemonListIsLoading} = usePokemonListIsLoading();
 
   const searchByName = (searchTerm: string) => {
     setNameAndPage({name: searchTerm, page: searchTerm === '' ? returnPage : 1});
@@ -21,7 +19,6 @@ export const Search = () => {
   const clearSearch = () => {
     if (name !== '') {
       searchBar.current!.value = '';
-      setPokemonListIsLoading(true);
       setNameAndPage({name: '', page: returnPage});
     }
   };

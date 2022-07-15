@@ -1,8 +1,10 @@
-import { Text } from '@chakra-ui/react';
-import { useMeta } from '../context/MetaContext';
+import {Text} from '@chakra-ui/react';
+import {usePokedex} from '../context/PokedexContex';
 
 export const Displaying = () => {
-  const { meta } = useMeta();
+  const {
+    pokedex: {meta}
+  } = usePokedex();
   const rangeText: string = meta?.total ? `${meta?.from} to ${meta?.to} of ` : ``;
   let displayText = meta ? `Displaying ${rangeText} ${meta?.total} Pokémon` : '';
 

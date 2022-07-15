@@ -1,4 +1,4 @@
-import {Box, Center, Flex, Spacer, Stack, Text} from '@chakra-ui/react';
+import {Box, Center, Flex, Stack, Text} from '@chakra-ui/react';
 import {useNavigate} from 'react-router-dom';
 import {Pokemon} from '../models/Pokemon';
 import {Types} from './Types';

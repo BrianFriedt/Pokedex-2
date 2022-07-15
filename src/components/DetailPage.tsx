@@ -2,11 +2,9 @@ import {useState, useEffect} from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
 import {Box, Flex, Text, Button, Center, Spacer} from '@chakra-ui/react';
 import {useDetailId} from '../context/DetailIdContext';
-import {usePokemonList} from '../context/PokemonListContex';
-import {useMeta} from '../context/MetaContext';
+import {usePokedex} from '../context/PokedexContex';
 import {useNameAndPage} from '../context/NameAndPageContext';
 import {DetailCard} from './DetailCard';
-import {useTotalNumOfPokemon} from '../context/TotalNumberOfPokemonContext';
 import {Invalid} from './Invalid';
 import {LoadingDots} from './LoadingDots';
 
@@ -15,18 +13,19 @@ export const DetailPage = () => {
   const pageId = parseInt(page_id!);
   let navigate = useNavigate();
   const {setDetailId} = useDetailId();
-  const {pokemonList, setPokemonList} = usePokemonList();
-  const {meta} = useMeta();
+  const {
+    pokedex: {list, meta, size},
+    setPokedex
+  } = usePokedex();
   const {nameAndPage, setNameAndPage} = useNameAndPage();
   const [prev, setPrev] = useState({value: 0, isLoading: true});
   const [next, setNext] = useState({value: 0, isLoading: true});
-  const {totalNumOfPokemon} = useTotalNumOfPokemon();
   const [title, setTitle] = useState('Title');
   const [detailPageBackgroundColor, setDetailPageBackgroundColor] = useState('#a8ded9');
 
   const pokemonIsInPokemonList = (id: number) => {
-    for (let i = 0; i < pokemonList.length; i++) {
-      if (pokemonList[i].id === id) {
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].id === id) {
         return true;
       }
     }
@@ -34,12 +33,12 @@ export const DetailPage = () => {
   };
 
   const initializePrevAndNext = () => {
-    if (pokemonList.length !== 0) {
+    if (list.length !== 0) {
       if (pokemonIsInPokemonList(pageId)) {
-        for (let i = 0; i < pokemonList.length; i++) {
-          if (pokemonList[i].id === pageId) {
-            if (pokemonList[i - 1]) {
-              setPrev({value: pokemonList[i - 1].id, isLoading: false});
+        for (let i = 0; i < list.length; i++) {
+          if (list[i].id === pageId) {
+            if (list[i - 1]) {
+              setPrev({value: list[i - 1].id, isLoading: false});
             } else {
               if (nameAndPage.page !== 1) {
                 fetch(`https://intern-pokedex.myriadapps.com/api/v1/pokemon?name=${nameAndPage.name}&page=${nameAndPage.page - 1}`)
@@ -51,8 +50,8 @@ export const DetailPage = () => {
                 setPrev({value: 0, isLoading: false});
               }
             }
-            if (pokemonList[i + 1]) {
-              setNext({value: pokemonList[i + 1].id, isLoading: false});
+            if (list[i + 1]) {
+              setNext({value: list[i + 1].id, isLoading: false});
             } else {
               if (nameAndPage.page !== meta?.last_page) {
                 fetch(`https://intern-pokedex.myriadapps.com/api/v1/pokemon?name=${nameAndPage.name}&page=${nameAndPage.page + 1}`)
@@ -67,28 +66,28 @@ export const DetailPage = () => {
             return;
           }
         }
-      } else if (pokemonList[pokemonList.length - 1].id < pageId) {
-        setPrev({value: pokemonList[pokemonList.length - 1].id, isLoading: false});
+      } else if (list[list.length - 1].id < pageId) {
+        setPrev({value: list[list.length - 1].id, isLoading: false});
         fetch(`https://intern-pokedex.myriadapps.com/api/v1/pokemon?name=${nameAndPage.name}&page=${nameAndPage.page + 1}`)
           .then((res) => res.json())
           .then(({data}) => {
-            setPokemonList(data);
+            setPokedex({list: data, isLoading: false, meta: meta, size: size});
             setNext({value: data[1].id, isLoading: false});
           });
         setNameAndPage({name: nameAndPage.name, page: nameAndPage.page + 1});
       } else {
-        setNext({value: pokemonList[0].id, isLoading: false});
+        setNext({value: list[0].id, isLoading: false});
         fetch(`https://intern-pokedex.myriadapps.com/api/v1/pokemon?name=${nameAndPage.name}&page=${nameAndPage.page - 1}`)
           .then((res) => res.json())
           .then(({data}) => {
-            setPokemonList(data);
+            setPokedex({list: data, isLoading: false, meta: meta, size: size});
             setPrev({value: data[data.length - 2].id, isLoading: false});
           });
         setNameAndPage({name: nameAndPage.name, page: nameAndPage.page - 1});
       }
     } else {
       setPrev({value: pageId - 1, isLoading: false});
-      setNext({value: pageId + 1 > totalNumOfPokemon ? 0 : pageId + 1, isLoading: false});
+      setNext({value: pageId + 1 > size ? 0 : pageId + 1, isLoading: false});
     }
   };
 
@@ -97,7 +96,7 @@ export const DetailPage = () => {
     setDetailId(pageId);
   }, [pageId]);
 
-  if (pageId > totalNumOfPokemon || pageId < 1 || isNaN(pageId)) {
+  if (pageId > size || pageId < 1 || isNaN(pageId)) {
     return <Invalid />;
   }
   return (

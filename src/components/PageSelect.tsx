@@ -1,11 +1,13 @@
-import {useMeta} from '../context/MetaContext';
 import {Box, Center, Flex} from '@chakra-ui/react';
 import {useReturnPage} from '../context/ReturnPageContext';
 import {PageSlider} from './PageSlider';
 import {useNameAndPage} from '../context/NameAndPageContext';
+import {usePokedex} from '../context/PokedexContex';
 
 export const PageSelect = () => {
-  const {meta} = useMeta();
+  const {
+    pokedex: {meta}
+  } = usePokedex();
   const {
     nameAndPage: {name, page},
     setNameAndPage

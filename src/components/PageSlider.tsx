@@ -1,17 +1,19 @@
-import { useMeta } from '../context/MetaContext';
-import { Slider, SliderFilledTrack, SliderMark, SliderThumb, SliderTrack } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { useReturnPage } from '../context/ReturnPageContext';
-import { useNameAndPage } from '../context/NameAndPageContext';
+import {Slider, SliderFilledTrack, SliderMark, SliderThumb, SliderTrack} from '@chakra-ui/react';
+import {useEffect, useState} from 'react';
+import {useReturnPage} from '../context/ReturnPageContext';
+import {useNameAndPage} from '../context/NameAndPageContext';
+import {usePokedex} from '../context/PokedexContex';
 
 export const PageSlider = () => {
-  const { meta } = useMeta();
   const {
-    nameAndPage: { name, page },
-    setNameAndPage,
+    pokedex: {meta}
+  } = usePokedex();
+  const {
+    nameAndPage: {name, page},
+    setNameAndPage
   } = useNameAndPage();
   const [sliderValue, setSliderValue] = useState(page);
-  const { setReturnPage } = useReturnPage();
+  const {setReturnPage} = useReturnPage();
 
   useEffect(() => {
     setSliderValue(page);
@@ -21,7 +23,7 @@ export const PageSlider = () => {
     if (name === '') {
       setReturnPage(index);
     }
-    setNameAndPage({ name: name, page: index });
+    setNameAndPage({name: name, page: index});
   };
   return (
     <Slider
@@ -49,7 +51,9 @@ export const PageSlider = () => {
 };
 
 const EndSliderMark = () => {
-  const { meta } = useMeta();
+  const {
+    pokedex: {meta}
+  } = usePokedex();
   if (meta && meta?.last_page !== 1) {
     return (
       <SliderMark value={meta?.last_page ?? 1} mt='3' ml='-3'>
