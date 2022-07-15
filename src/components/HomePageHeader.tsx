@@ -1,8 +1,8 @@
-import { Flex, Heading, Center, Box } from '@chakra-ui/react';
-import { Displaying } from './Displaying';
-import { ToDetailByIdButton } from './ToDetailByIdButton';
-import { Search } from './Search';
-import { PageSelect } from './PageSelect';
+import {Flex, Heading, Center, Box} from '@chakra-ui/react';
+import {Displaying} from './Displaying';
+import {ToDetailByIdButton} from './ToDetailByIdButton';
+import {Search} from './Search';
+import {PageSelect} from './PageSelect';
 
 export const HomePageHeader = () => {
   return (

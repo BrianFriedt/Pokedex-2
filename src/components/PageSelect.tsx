@@ -33,7 +33,7 @@ export const PageSelect = () => {
   };
 
   return (
-    <Flex w='100%' bg='#009688' borderRadius='xl' mb={['2', '3']}>
+    <Flex w='100%' bg='#009688' borderRadius='xl' mb={['0', '0', '2']}>
       <Center
         as='a'
         href={`/pokemon/?name=${name}&page=${page !== 1 ? page - 1 : page}`}

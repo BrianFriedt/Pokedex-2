@@ -1,7 +1,7 @@
-import { Box, Center, Flex, Spacer, Stack, Text } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
-import { Pokemon } from '../models/Pokemon';
-import { Types } from './Types';
+import {Box, Center, Flex, Spacer, Stack, Text} from '@chakra-ui/react';
+import {useNavigate} from 'react-router-dom';
+import {Pokemon} from '../models/Pokemon';
+import {Types} from './Types';
 import PokemonCardImage from './PokemonCardImage';
 
 interface Props {
@@ -9,8 +9,8 @@ interface Props {
   key: number;
 }
 
-export const PokemonCard = ({ pokemon }: Props) => {
-  const { name, id, types } = pokemon;
+export const PokemonCard = ({pokemon}: Props) => {
+  const {name, id, types} = pokemon;
   const navigate = useNavigate();
 
   return (
@@ -27,18 +27,17 @@ export const PokemonCard = ({ pokemon }: Props) => {
       boxShadow='lg'
       borderRadius='xl'
       transition='0.5s'
-      _hover={{ transform: 'scale(1.10)', border: `` }}
+      _hover={{transform: 'scale(1.10)', border: ``}}
       maxW={['300', '300', 'unset']}
       width='100%'
       margin='auto'
     >
       <Stack w='100%' spacing='none'>
-        <Flex px='4'>
-          <Text mb='-3' fontSize={['3xl']} fontWeight='bold'>
+        <Flex px='4' position='relative'>
+          <Text mb='-3' fontSize={['3xl']} fontWeight='bold' zIndex='998'>
             {name}
           </Text>
-          <Spacer />
-          <Text fontSize={['md', 'lg', 'lg', 'xl']} color='gray.300'>
+          <Text fontSize={['md', 'lg', 'lg', 'xl']} color='gray.300' position='absolute' right='4'>
             #{id}
           </Text>
         </Flex>
