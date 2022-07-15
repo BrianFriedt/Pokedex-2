@@ -1,26 +1,26 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Flex, Text, Button, Center, Spacer } from '@chakra-ui/react';
-import { useDetailId } from '../context/DetailIdContext';
-import { usePokemonList } from '../context/PokemonListContex';
-import { useMeta } from '../context/MetaContext';
-import { useNameAndPage } from '../context/NameAndPageContext';
-import { DetailCard } from './DetailCard';
-import { useTotalNumOfPokemon } from '../context/TotalNumberOfPokemonContext';
-import { Invalid } from './Invalid';
-import { LoadingDots } from './LoadingDots';
+import {useState, useEffect} from 'react';
+import {useParams, useNavigate} from 'react-router-dom';
+import {Box, Flex, Text, Button, Center, Spacer} from '@chakra-ui/react';
+import {useDetailId} from '../context/DetailIdContext';
+import {usePokemonList} from '../context/PokemonListContex';
+import {useMeta} from '../context/MetaContext';
+import {useNameAndPage} from '../context/NameAndPageContext';
+import {DetailCard} from './DetailCard';
+import {useTotalNumOfPokemon} from '../context/TotalNumberOfPokemonContext';
+import {Invalid} from './Invalid';
+import {LoadingDots} from './LoadingDots';
 
 export const DetailPage = () => {
-  const { page_id } = useParams();
+  const {page_id} = useParams();
   const pageId = parseInt(page_id!);
   let navigate = useNavigate();
-  const { setDetailId } = useDetailId();
-  const { pokemonList, setPokemonList } = usePokemonList();
-  const { meta } = useMeta();
-  const { nameAndPage, setNameAndPage } = useNameAndPage();
-  const [prev, setPrev] = useState({ value: 0, isLoading: true });
-  const [next, setNext] = useState({ value: 0, isLoading: true });
-  const { totalNumOfPokemon } = useTotalNumOfPokemon();
+  const {setDetailId} = useDetailId();
+  const {pokemonList, setPokemonList} = usePokemonList();
+  const {meta} = useMeta();
+  const {nameAndPage, setNameAndPage} = useNameAndPage();
+  const [prev, setPrev] = useState({value: 0, isLoading: true});
+  const [next, setNext] = useState({value: 0, isLoading: true});
+  const {totalNumOfPokemon} = useTotalNumOfPokemon();
   const [title, setTitle] = useState('Title');
   const [detailPageBackgroundColor, setDetailPageBackgroundColor] = useState('#a8ded9');
 
@@ -39,56 +39,56 @@ export const DetailPage = () => {
         for (let i = 0; i < pokemonList.length; i++) {
           if (pokemonList[i].id === pageId) {
             if (pokemonList[i - 1]) {
-              setPrev({ value: pokemonList[i - 1].id, isLoading: false });
+              setPrev({value: pokemonList[i - 1].id, isLoading: false});
             } else {
               if (nameAndPage.page !== 1) {
                 fetch(`https://intern-pokedex.myriadapps.com/api/v1/pokemon?name=${nameAndPage.name}&page=${nameAndPage.page - 1}`)
                   .then((res) => res.json())
-                  .then(({ data }) => {
-                    setPrev({ value: data[data.length - 1].id, isLoading: false });
+                  .then(({data}) => {
+                    setPrev({value: data[data.length - 1].id, isLoading: false});
                   });
               } else {
-                setPrev({ value: 0, isLoading: false });
+                setPrev({value: 0, isLoading: false});
               }
             }
             if (pokemonList[i + 1]) {
-              setNext({ value: pokemonList[i + 1].id, isLoading: false });
+              setNext({value: pokemonList[i + 1].id, isLoading: false});
             } else {
               if (nameAndPage.page !== meta?.last_page) {
                 fetch(`https://intern-pokedex.myriadapps.com/api/v1/pokemon?name=${nameAndPage.name}&page=${nameAndPage.page + 1}`)
                   .then((res) => res.json())
-                  .then(({ data }) => {
-                    setNext({ value: data[0].id, isLoading: false });
+                  .then(({data}) => {
+                    setNext({value: data[0].id, isLoading: false});
                   });
               } else {
-                setNext({ value: 0, isLoading: false });
+                setNext({value: 0, isLoading: false});
               }
             }
             return;
           }
         }
       } else if (pokemonList[pokemonList.length - 1].id < pageId) {
-        setPrev({ value: pokemonList[pokemonList.length - 1].id, isLoading: false });
+        setPrev({value: pokemonList[pokemonList.length - 1].id, isLoading: false});
         fetch(`https://intern-pokedex.myriadapps.com/api/v1/pokemon?name=${nameAndPage.name}&page=${nameAndPage.page + 1}`)
           .then((res) => res.json())
-          .then(({ data }) => {
+          .then(({data}) => {
             setPokemonList(data);
-            setNext({ value: data[1].id, isLoading: false });
+            setNext({value: data[1].id, isLoading: false});
           });
-        setNameAndPage({ name: nameAndPage.name, page: nameAndPage.page + 1 });
+        setNameAndPage({name: nameAndPage.name, page: nameAndPage.page + 1});
       } else {
-        setNext({ value: pokemonList[0].id, isLoading: false });
+        setNext({value: pokemonList[0].id, isLoading: false});
         fetch(`https://intern-pokedex.myriadapps.com/api/v1/pokemon?name=${nameAndPage.name}&page=${nameAndPage.page - 1}`)
           .then((res) => res.json())
-          .then(({ data }) => {
+          .then(({data}) => {
             setPokemonList(data);
-            setPrev({ value: data[data.length - 2].id, isLoading: false });
+            setPrev({value: data[data.length - 2].id, isLoading: false});
           });
-        setNameAndPage({ name: nameAndPage.name, page: nameAndPage.page - 1 });
+        setNameAndPage({name: nameAndPage.name, page: nameAndPage.page - 1});
       }
     } else {
-      setPrev({ value: pageId - 1, isLoading: false });
-      setNext({ value: pageId + 1 > totalNumOfPokemon ? 0 : pageId + 1, isLoading: false });
+      setPrev({value: pageId - 1, isLoading: false});
+      setNext({value: pageId + 1 > totalNumOfPokemon ? 0 : pageId + 1, isLoading: false});
     }
   };
 
@@ -109,7 +109,7 @@ export const DetailPage = () => {
           href={`/pokemon?name=${nameAndPage.name}&page=${nameAndPage.page}`}
           onClick={(event) => {
             event.preventDefault();
-            navigate(`/pokemon?name=${nameAndPage.name}&page=${nameAndPage.page}`, { replace: true });
+            navigate(`/pokemon?name=${nameAndPage.name}&page=${nameAndPage.page}`, {replace: true});
           }}
           bg='rgb(255, 255, 255, 0.35)'
           size={['md', 'md', 'lg']}
@@ -131,7 +131,7 @@ export const DetailPage = () => {
           onClick={(event) => {
             event.preventDefault();
             if (!prev.isLoading) {
-              setPrev({ value: prev.value, isLoading: true });
+              setPrev({value: prev.value, isLoading: true});
               navigate(`/pokemon/${prev.value}`);
             }
           }}
@@ -160,7 +160,7 @@ export const DetailPage = () => {
           onClick={(event) => {
             event.preventDefault();
             if (!next.isLoading) {
-              setNext({ value: next.value, isLoading: true });
+              setNext({value: next.value, isLoading: true});
               navigate(`/pokemon/${next.value}`);
             }
           }}

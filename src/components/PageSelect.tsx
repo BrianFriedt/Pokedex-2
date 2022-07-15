@@ -1,31 +1,29 @@
-import { useMeta } from '../context/MetaContext';
-import { usePokemonListIsLoading } from '../context/PokemonListIsLoadingContext';
-import { useSearchParams } from 'react-router-dom';
-import { Box, Center, Flex } from '@chakra-ui/react';
-import { useReturnPage } from '../context/ReturnPageContext';
-import { PageSlider } from './PageSlider';
+import {useMeta} from '../context/MetaContext';
+import {Box, Center, Flex} from '@chakra-ui/react';
+import {useReturnPage} from '../context/ReturnPageContext';
+import {PageSlider} from './PageSlider';
+import {useNameAndPage} from '../context/NameAndPageContext';
 
 export const PageSelect = () => {
-  const { meta } = useMeta();
-  const { setPokemonListIsLoading } = usePokemonListIsLoading();
-  const [searchParams, setSearchParams] = useSearchParams();
-  let name: string = searchParams.get('name') ?? '';
-  let page: number = parseInt(searchParams.get('page') ?? '1');
-  const { setReturnPage } = useReturnPage();
+  const {meta} = useMeta();
+  const {
+    nameAndPage: {name, page},
+    setNameAndPage
+  } = useNameAndPage();
+  const {setReturnPage} = useReturnPage();
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, buttonName: string) => {
     event.preventDefault();
-    setPokemonListIsLoading(true);
     switch (buttonName) {
       case 'back':
         if (page !== 1) {
-          setSearchParams({ name: name, page: (page - 1).toString() });
+          setNameAndPage({name: name, page: page - 1});
           if (name === '') setReturnPage(page - 1);
         }
         break;
       case 'next':
         if (page !== meta!.last_page) {
-          setSearchParams({ name: name, page: (page + 1).toString() });
+          setNameAndPage({name: name, page: page + 1});
           if (name === '') setReturnPage(page + 1);
         }
         break;

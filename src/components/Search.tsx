@@ -1,38 +1,40 @@
-import { Button, Input, Stack } from '@chakra-ui/react';
-import { RefObject, createRef, ChangeEvent } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { useReturnPage } from '../context/ReturnPageContext';
-import { usePokemonListIsLoading } from '../context/PokemonListIsLoadingContext';
+import {Button, Input, Stack} from '@chakra-ui/react';
+import {RefObject, createRef, ChangeEvent} from 'react';
+import {useReturnPage} from '../context/ReturnPageContext';
+import {usePokemonListIsLoading} from '../context/PokemonListIsLoadingContext';
 import _ from 'lodash';
+import {useNameAndPage} from '../context/NameAndPageContext';
 
 export const Search = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  let name: string = searchParams.get('name') ?? '';
+  const {
+    nameAndPage: {name},
+    setNameAndPage
+  } = useNameAndPage();
   const searchBar: RefObject<HTMLInputElement> = createRef();
-  const { returnPage } = useReturnPage();
-  const { setPokemonListIsLoading } = usePokemonListIsLoading();
+  const {returnPage} = useReturnPage();
+  const {setPokemonListIsLoading} = usePokemonListIsLoading();
 
-  const searchByName = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchParams({ name: event.target.value.trim(), page: event.target.value.trim() === '' ? returnPage.toString() : '1' });
+  const searchByName = (searchTerm: string) => {
+    setNameAndPage({name: searchTerm, page: searchTerm === '' ? returnPage : 1});
   };
 
   const clearSearch = () => {
     if (name !== '') {
       searchBar.current!.value = '';
       setPokemonListIsLoading(true);
-      setSearchParams({ name: '', page: returnPage.toString() });
+      setNameAndPage({name: '', page: returnPage});
     }
   };
 
   return (
     <Stack w='100%' direction='row' alignItems='center' spacing='0'>
       <Input
-        onChange={_.debounce(searchByName, 500)}
+        onChange={_.debounce((event: ChangeEvent<HTMLInputElement>) => searchByName(event.target.value.trim()), 500)}
         ref={searchBar}
         textColor='black'
         defaultValue={name}
         placeholder='Search'
-        _placeholder={{ color: 'gray.200' }}
+        _placeholder={{color: 'gray.200'}}
         fontSize={['3xl', '4xl', '4xl', '5xl']}
         py={['2', '4', '4', '6']}
         pb={['2', '4', '4', '7']}

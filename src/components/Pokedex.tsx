@@ -1,31 +1,33 @@
-import { Center, SimpleGrid, VStack, Text, Image } from '@chakra-ui/react';
-import { Loading } from './Loading';
-import { PokemonCard } from './PokemonCard';
-import { usePokemonListIsLoading } from '../context/PokemonListIsLoadingContext';
-import { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { useMeta } from '../context/MetaContext';
-import { useTotalNumOfPokemon } from '../context/TotalNumberOfPokemonContext';
-import { usePokemonList } from '../context/PokemonListContex';
-import { useNameAndPage } from '../context/NameAndPageContext';
+import {Center, SimpleGrid, VStack, Text, Image} from '@chakra-ui/react';
+import {Loading} from './Loading';
+import {PokemonCard} from './PokemonCard';
+import {usePokemonListIsLoading} from '../context/PokemonListIsLoadingContext';
+import {useEffect} from 'react';
+import {useSearchParams} from 'react-router-dom';
+import {useMeta} from '../context/MetaContext';
+import {useTotalNumOfPokemon} from '../context/TotalNumberOfPokemonContext';
+import {usePokemonList} from '../context/PokemonListContex';
+import {useNameAndPage} from '../context/NameAndPageContext';
 
 export const Pokedex = () => {
-  const [searchParams] = useSearchParams();
-  let name: string = searchParams.get('name') ?? '';
-  let page: string = searchParams.get('page') ?? '1';
-  const { pokemonListIsLoading, setPokemonListIsLoading } = usePokemonListIsLoading();
-  const { pokemonList, setPokemonList } = usePokemonList();
-  const { setMeta } = useMeta();
-  const { setTotalNumOfPokemon } = useTotalNumOfPokemon();
-  const { setNameAndPage } = useNameAndPage();
+  const [, setSearchParams] = useSearchParams();
+  const {
+    nameAndPage: {name, page}
+  } = useNameAndPage();
+  const {pokemonListIsLoading, setPokemonListIsLoading} = usePokemonListIsLoading();
+  const {pokemonList, setPokemonList} = usePokemonList();
+  const {setMeta} = useMeta();
+  const {setTotalNumOfPokemon} = useTotalNumOfPokemon();
 
   useEffect(() => {
     const abortController = new AbortController();
+    setSearchParams({name: name, page: page.toString()});
     setPokemonListIsLoading(true);
-    setNameAndPage({ name: name, page: parseInt(page) });
-    fetch(`https://intern-pokedex.myriadapps.com/api/v1/pokemon?${new URLSearchParams({ name, page })}`, { signal: abortController.signal })
+    fetch(`https://intern-pokedex.myriadapps.com/api/v1/pokemon?${new URLSearchParams({name: name, page: page.toString()})}`, {
+      signal: abortController.signal
+    })
       .then((res) => res.json())
-      .then(({ data, meta }) => {
+      .then(({data, meta}) => {
         setMeta(meta);
         setPokemonList(data);
         setPokemonListIsLoading(false);

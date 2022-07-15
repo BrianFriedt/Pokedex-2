@@ -1,14 +1,15 @@
 import { useMeta } from '../context/MetaContext';
-import { useSearchParams } from 'react-router-dom';
 import { Slider, SliderFilledTrack, SliderMark, SliderThumb, SliderTrack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useReturnPage } from '../context/ReturnPageContext';
+import { useNameAndPage } from '../context/NameAndPageContext';
 
 export const PageSlider = () => {
   const { meta } = useMeta();
-  const [searchParams, setSearchParams] = useSearchParams();
-  let name: string = searchParams.get('name') ?? '';
-  let page: number = parseInt(searchParams.get('page') ?? '1');
+  const {
+    nameAndPage: { name, page },
+    setNameAndPage,
+  } = useNameAndPage();
   const [sliderValue, setSliderValue] = useState(page);
   const { setReturnPage } = useReturnPage();
 
@@ -20,7 +21,7 @@ export const PageSlider = () => {
     if (name === '') {
       setReturnPage(index);
     }
-    setSearchParams({ name: name, page: index.toString() });
+    setNameAndPage({ name: name, page: index });
   };
   return (
     <Slider
