@@ -34,7 +34,7 @@ export const PokemonCard = ({pokemon}: Props) => {
     >
       <Stack w='100%' spacing='none'>
         <Flex px='4' position='relative'>
-          <Text mb='-3' fontSize={['3xl']} fontWeight='bold' zIndex='998'>
+          <Text mb='-3' fontSize='3xl' fontWeight='bold' zIndex='998'>
             {name}
           </Text>
           <Text fontSize={['md', 'lg', 'lg', 'xl']} color='gray.300' position='absolute' right='4'>

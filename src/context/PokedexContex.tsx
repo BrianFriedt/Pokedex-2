@@ -19,7 +19,7 @@ interface Pokedex {
 }
 
 const useValue = () => {
-  const [pokedex, setPokedex] = useState<Pokedex>({list: [], isLoading: true, meta: undefined, size: 1});
+  const [pokedex, setPokedex] = useState<Pokedex>({list: [], isLoading: true, meta: undefined, size: 553});
   return {
     pokedex,
     setPokedex

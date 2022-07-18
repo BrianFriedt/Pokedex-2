@@ -33,7 +33,10 @@ export const DetailPageHeader = ({title, pageId}: Props) => {
   };
 
   const initializePrevAndNext = () => {
-    if (list.length !== 0) {
+    if (list.length === 0 || nameAndPage.name === '') {
+      setPrev({value: pageId - 1, isLoading: false});
+      setNext({value: pageId + 1 > size ? 0 : pageId + 1, isLoading: false});
+    } else {
       if (pokemonIsInPokemonList(pageId)) {
         for (let i = 0; i < list.length; i++) {
           if (list[i].id === pageId) {
@@ -85,9 +88,15 @@ export const DetailPageHeader = ({title, pageId}: Props) => {
           });
         setNameAndPage({name: nameAndPage.name, page: nameAndPage.page - 1});
       }
-    } else {
-      setPrev({value: pageId - 1, isLoading: false});
-      setNext({value: pageId + 1 > size ? 0 : pageId + 1, isLoading: false});
+    }
+  };
+
+  const handleClick = (event: any, button: {value: number; isLoading: boolean}) => {
+    event.preventDefault();
+    if (!button.isLoading) {
+      if (button === prev) setPrev({value: button.value, isLoading: true});
+      else setNext({value: button.value, isLoading: true});
+      navigate(`/pokemon/${button.value}`);
     }
   };
 
@@ -126,13 +135,7 @@ export const DetailPageHeader = ({title, pageId}: Props) => {
         w='16'
         href={`/pokemon/${prev.value}`}
         visibility={prev.value === 0 ? 'hidden' : 'visible'}
-        onClick={(event) => {
-          event.preventDefault();
-          if (!prev.isLoading) {
-            setPrev({value: prev.value, isLoading: true});
-            navigate(`/pokemon/${prev.value}`);
-          }
-        }}
+        onClick={(event) => handleClick(event, prev)}
       >
         {prev.isLoading ? <LoadingDots /> : `< ${prev.value}`}
       </Button>
@@ -155,13 +158,7 @@ export const DetailPageHeader = ({title, pageId}: Props) => {
         w='16'
         href={`/pokemon/${next.value}`}
         visibility={next.value === 0 ? 'hidden' : 'visible'}
-        onClick={(event) => {
-          event.preventDefault();
-          if (!next.isLoading) {
-            setNext({value: next.value, isLoading: true});
-            navigate(`/pokemon/${next.value}`);
-          }
-        }}
+        onClick={(event) => handleClick(event, next)}
       >
         {next.isLoading ? <LoadingDots /> : `${next.value} >`}
       </Button>

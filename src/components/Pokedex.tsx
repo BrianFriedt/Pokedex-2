@@ -17,6 +17,7 @@ export const Pokedex = () => {
   } = usePokedex();
 
   useEffect(() => {
+    console.log('loading pokedex');
     const abortController = new AbortController();
     setSearchParams({name: name, page: page.toString()});
     setPokedex({list: list, isLoading: true, meta: meta, size: size});
