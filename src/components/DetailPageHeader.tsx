@@ -33,7 +33,7 @@ export const DetailPageHeader = ({title, pageId}: Props) => {
   };
 
   const initializePrevAndNext = () => {
-    if (list.length === 0 || nameAndPage.name === '') {
+    if (list.length === 0) {
       setPrev({value: pageId - 1, isLoading: false});
       setNext({value: pageId + 1 > size ? 0 : pageId + 1, isLoading: false});
     } else {
